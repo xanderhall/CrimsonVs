@@ -1,9 +1,25 @@
 {
-	"extends": ["standard", "plugin:jest/recommended"],
-	"plugins": ["jest"],
+	"plugins": [
+        "jest", 
+        "node", 
+        "promise"
+    ],
+	"extends": [
+        "eslint:recommended",
+        "plugin:jest/recommended", 
+        "airbnb-base"
+    ],
 	"env": {
         "node": true,
         "es6": true,
         "jest": true
+    },
+    "parserOptions": {
+        "ecmaVersion": 11,
+        "sourceType": "module"
+    },
+    "rules": {
+        "indent": ["error", 4],
+        "no-plusplus": ["error", {"allowForLoopAfterthoughts": true}]
     }
 }
