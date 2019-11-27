@@ -9,8 +9,7 @@ export default [
     },
     {
         name: 'All At Once',
-        description: 'Adds 2 AP to your General for each of your active units, including this one.',
-        duration: 1,
+        description: 'Your General gains 2 AP for each of their active units, including this one.',
     },
     {
         name: "Anu's Karma",
@@ -26,7 +25,7 @@ export default [
     },
     {
         name: "Avatar's Descent",
-        description: "Your General gains 5 AP for 5 turns. Reduce all damage from your opponent's junctioned abilities to 0.",
+        description: "Your General gains 5 AP for 5 turns. Nullify all damage your General would take from the enemy General's units.",
     },
     {
         name: 'Blades Crossing',
@@ -50,7 +49,7 @@ export default [
     },
     {
         name: 'Clenching Teeth',
-        description: 'The first time your General would be reduced to 0 HP, it is instead set to 1 HP.',
+        description: 'The first time your General would be reduced to 0 HP, they are instead set to 1 HP.',
     },
     {
         name: 'Cross Counter',
@@ -70,7 +69,7 @@ export default [
     },
     {
         name: 'Detail Oriented',
-        description: 'Nullify all damage dealt to either General if the damage dealt is less than 2.',
+        description: 'Nullify all damage dealt to both Generals if the damage dealt is less than 2.',
     },
     {
         name: 'Different Mix',
@@ -78,20 +77,19 @@ export default [
     },
     {
         name: 'Divine Punishment',
-        description: 'Deal 5 points of damage to the enemy General.',
+        description: 'Deal 5 damage to the enemy General.',
     },
     {
         name: 'Double Trigger',
-        description: 'When your General deals damage, it deals an additional 2 damage.',
+        description: 'Whenever your General deals damage, they deal an additional 2 damage.',
     },
     {
-        // TODO
         name: "Emperor's Pride",
         description: 'Reduce normal damage dealt to your General by 1.',
     },
     {
         name: 'Energy Drain',
-        description: 'Your General gains 3 HP and the enemy General loses 3 HP. (This loss cannot be prevented by damage reducing effects)',
+        description: 'Your General gains 3 HP and the enemy General loses 3 HP. (This is not considered damage)',
     },
     {
         name: 'Energy Genome',
@@ -99,7 +97,7 @@ export default [
     },
     {
         name: 'Estranged Self',
-        description: "Disable all of the enemy General's units. When your General takes damage, it takes an additional 2 damage.",
+        description: "Disable all of the enemy General's units. When your General takes damage, they take an additional 2 damage.",
     },
     {
         name: 'Filling Hollow',
@@ -123,19 +121,19 @@ export default [
     },
     {
         name: "Folset's Trial",
-        description: 'At the beginning of your turn, your General gains 1 AP and loses 1 HP. (This loss cannot be prevented by damage reducing effects)',
+        description: 'At the beginning of your turn, your General gains 1 AP and loses 1 HP. (This is not considered damage)',
     },
     {
         name: 'Fused Consciousness',
-        description: "Set your General's AP and HP to the average of both Generals' AP and HP.",
+        description: "Set your General's AP and HP to the average of both Generals' AP and HP respectively.",
     },
     {
         name: "Gabi's Call",
-        description: "Disable the enemy General's Shield and Sword units.",
+        description: "Disable all of the enemy General's Shield and Sword units.",
     },
     {
         name: 'Gathering of the Strong',
-        description: 'For 5 turns, deal 1 damage to the enemy General.',
+        description: 'For 5 turns, at the beginning of the turn, deal 1 damage to the enemy General.',
     },
     {
         name: 'Golden Spear',
@@ -151,7 +149,7 @@ export default [
     },
     {
         name: 'Harmonic Rhythm',
-        description: 'At the beginning of your turn, your General gains 2 AP if they went first, or 4 HP if they went second.',
+        description: 'At the beginning of your turn, your General gains 2 AP if they went first or 4 HP if they went second.',
     },
     {
         name: 'Immortal Genome',
@@ -163,7 +161,7 @@ export default [
     },
     {
         name: "Kaede's Guard",
-        description: "Disable the enemy General's Shield and Wand units.",
+        description: "Disable all of the enemy General's Shield and Wand units.",
     },
     {
         name: 'Light of Annihilation',
@@ -175,7 +173,7 @@ export default [
     },
     {
         name: 'Massacre Pulse',
-        description: 'Whenever your General attacks, it gains 1 AP',
+        description: 'Whenever your General attacks, they gain 1 AP',
     },
     {
         name: 'Meeting of Souls',
@@ -187,7 +185,7 @@ export default [
     },
     {
         name: "Mind's Eye",
-        description: "Nullify the enemy General's next attack.",
+        description: "Nullify one of the enemy General's attacks.",
     },
     {
         name: 'Mirror of Revenge',
@@ -202,9 +200,8 @@ export default [
         description: 'Your General gains 3 AP and the enemy General loses 3 AP. At the beginning of EVERY turn. your General loses 1 AP and the enemy General gains 1 AP.',
     },
     {
-        // TODO
         name: 'Pattern of Demons',
-        description: "Disable one of the enemy General's units with the highest cost.",
+        description: "Disable the enemy General's unit with the highest cost. If more than one unit share the highest cost, one is chosen at random.",
     },
     {
         name: 'Price of Insight',
@@ -224,7 +221,7 @@ export default [
     },
     {
         name: 'Reckless Rewards',
-        description: 'Your General gains 2 AP. When your General takes damage, it takes an additional 1 damage.',
+        description: 'Your General gains 2 AP. When your General takes damage, they take an additional 1 damage.',
     },
     {
         name: 'Rendezvous',
@@ -236,7 +233,7 @@ export default [
     },
     {
         name: 'Shooting Squad',
-        description: "Disable the enemy General's active Sword and Wand units.",
+        description: "Disable all of the enemy General's active Sword and Wand units.",
     },
     {
         name: 'Snipe Thunder',
@@ -244,19 +241,19 @@ export default [
     },
     {
         name: 'Spirit Clothes',
-        description: 'Reduce all damage your General would take by 1 point.',
+        description: 'Reduce all damage your General would take by 1.',
     },
     {
         name: 'Suck it up!',
-        description: "The first time your General's HP is reduced to 0, it is instead set to 5.",
+        description: "The first time your General's HP is reduced to 0, they are instead set to 5 HP.",
     },
     {
         name: 'Teamwork',
-        description: "Your General gains 2 AP and 2 HP if they have an active Delta Combo, and loses 2 AP and 2 HP if they don't",
+        description: 'Your General gains 2 AP and 2 HP if they have an active Delta Combo. Otherwise, they lose 2 AP and 2 HP.',
     },
     {
         name: 'Telepathy',
-        description: "Your General gains 5 AP and 5 HP if they have an active Delta Combo, and loses 5 AP and 5 HP if they don't",
+        description: 'Your General gains 5 AP and 5 HP if they have an active Delta Combo. Otherwise, they lose 5 AP and 5 HP.',
     },
     {
         name: 'Time Torrent',
@@ -296,10 +293,9 @@ export default [
     },
     {
         name: 'Whirlwind Assault',
-        description: "Disable 1 of the enemy General's active Wand units.",
+        description: "Disable one of the enemy General's active Wand units.",
     },
     {
-        // TODO
         name: 'Will of Similars',
         description: "If this card's type matches your General's, they gain 3 AP and 3 HP. Otherwise, they lose 3 AP and 3 HP.",
     },
