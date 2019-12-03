@@ -1,4 +1,15 @@
-export default [
+exports.Ability = class Ability {
+    constructor(props) {
+        this.name = props.name;
+        this.description = props.description;
+        this.state = {
+            duration: props.duration,
+            isActive: props.isActive,
+        };
+    }
+};
+
+exports.Abilities = [
     {
         name: 'AIDA Berserk',
         description: 'At the beginning of your turn, your General gains 2 AP and takes 2 damage.',
