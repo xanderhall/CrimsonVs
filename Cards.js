@@ -42,6 +42,7 @@ export class General {
         this.state = {
             hp: props.hp,
             ap: props.ap,
+            canAttack: true,
         };
     }
 
