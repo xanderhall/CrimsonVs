@@ -20,6 +20,8 @@
     },
     "rules": {
         "indent": ["error", 4],
-        "no-plusplus": ["error", {"allowForLoopAfterthoughts": true}]
+        "no-plusplus": ["error", {"allowForLoopAfterthoughts": true}],
+        "arrow-parens": ["off"],
+        "brace-style": ["error", "stroustrup", { "allowSingleLine": true }]
     }
 }
