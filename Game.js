@@ -1,5 +1,5 @@
 const { Unit, General } = require('./Cards');
-const { EFFECTS } = require('./Constants');
+const { EVENTS } = require('./Constants');
 
 const Ruleset = {
     units: 3,
@@ -10,7 +10,7 @@ const constructDeck = deck => {
     const [commander, ...units] = deck;
     return {
         commander: new General(commander),
-        units: units.forEach(id => new Unit(id)),
+        units: units.map(id => new Unit(id)),
     };
 };
 
@@ -26,25 +26,50 @@ class Game {
         this.log = [];
     }
 
+    log(...messages) {
+        messages.forEach(message => this.log.push(message));
+    }
+
+    adjustCommanderStats({ target, ap = 0, hp = 0 }) {
+        const { commander } = this.players[target];
+        this.players[target].commander = {
+            ...commander,
+            ap,
+            hp,
+        };
+    }
+
+    evaluateEffects(eventInfo, units) {
+        return units.reduce((event, unit) => {
+            if (unit.isActive && unit.effects.has(eventInfo.type)) {
+                const ability = unit.effects.get(eventInfo.type);
+                if (ability.isActive && ability.duration !== 0) {
+                    return ability.effect(event, this, unit);
+                }
+            }
+            return event;
+        });
+    }
+
     runGame() {
-        this.log.push('Battle has begun!');
-        this.log.push(`${this.players[0].commander.name} versus ${this.players[1].commander.name}!`);
+        this.log('Battle has begun!');
+        this.log(`${this.players[0].commander.name} versus ${this.players[1].commander.name}!`);
         // Determine active units
         for (let i = 0; i < Ruleset.units; i++) {
             const result = this.players[0].units[i].cost - this.players[1].units[i].cost;
             // Adjust for types
             const typeAdjustment = this.players[0].units[i].compareTypes(this.players[1].units[i]);
-            this.log.push('Clash!');
+            this.log('Clash!');
             if ((result + typeAdjustment) > 0) {
-                this.log.push("Player one's unit wins!");
+                this.log("Player one's unit wins!");
                 this.players[1].units[i].isActive = false;
             }
             else if ((result + typeAdjustment) < 0) {
-                this.log.push("Player two's unit wins!");
+                this.log("Player two's unit wins!");
                 this.players[0].units[i].isActive = false;
             }
             else {
-                this.log.push('Tie!');
+                this.log('Tie!');
                 this.players[0].units[i].isActive = false;
                 this.players[1].units[i].isActive = false;
             }
@@ -52,11 +77,12 @@ class Game {
         // Determine turn order
         const turnOrder = this.players[0].commander.compareTypes(this.players[1].commander);
         const turnOrderEvent = {
+            event: EVENTS.onTurnOrderDetermination,
             forceFirst: false,
             forceSecond: false,
         };
 
-        this.evaluateEffect(EFFECTS.turnOrder, [...this.players[0].units, ...this.players[1].units])
+        this.evaluateEffects(turnOrderEvent, [...this.players[0].units, ...this.players[1].units]);
 
         if (turnOrderEvent.forceFirst === 0 || turnOrderEvent.forceSecond === 1) {
             this.turnPlayer = generateTurnArray(0);
@@ -75,7 +101,7 @@ class Game {
         }
 
         // Activate any start of game effects
-        this.evaluateEffect(EFFECTS.gameStart, [...this.players[0].units, ...this.players[1].units]);
+        this.evaluateEffects(EVENTS.onGameStart, [...this.players[0].units, ...this.players[1].units]);
 
         // Start turn loop
         this.runLoop();
@@ -83,7 +109,7 @@ class Game {
 
     runLoop() {
         while (this.turn <= Ruleset.turns) {
-            this.log.push(`Turn ${this.turn}`);
+            this.log(`Turn ${this.turn}`);
             const currentPlayer = this.players[this.turnPlayer[this.turn]];
             const enemyPlayer = this.players[this.turnPlayer[this.turn]](currentPlayer + 1) % 2;
 
@@ -110,34 +136,26 @@ class Game {
 
     isGameOver() {
         if (this.players[0].commander.hp <= 0) {
-            this.log.push('Player two wins!');
+            this.log('Player two wins!');
             return true;
         }
         if (this.players[0].commander.hp <= 0) {
-            this.log.push('Player one wins!');
+            this.log('Player one wins!');
             return true;
         }
         if (this.turn === Ruleset.turns) {
-            this.log.push('End of game!');
+            this.log('End of game!');
             if (this.players[0].commander.hp > this.players[1].commander.hp) {
-                this.log.push('Player one has more HP!');
-                this.log.push('Player one wins!');
+                this.log('Player one has more HP!');
+                this.log('Player one wins!');
             }
             else if (this.players[1].commander.hp > this.players[0].commander.hp) {
-                this.log.push('Player two has more HP!');
-                this.log.push('Player two wins!');
+                this.log('Player two has more HP!');
+                this.log('Player two wins!');
             }
             return true;
         }
         return false;
-    }
-
-    evaluateEffect(effectId, units) {
-        units.forEach(unit => {
-            if (unit.isActive && unit.effects[effectId]) {
-                unit.effects[effectId](this);
-            }
-        });
     }
 }
 
