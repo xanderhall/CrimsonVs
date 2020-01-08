@@ -1,11 +1,12 @@
+const { EVENTS } = require('./Constants');
+
 exports.Ability = class Ability {
-    constructor(props) {
-        this.name = props.name;
-        this.description = props.description;
-        this.state = {
-            duration: props.duration,
-            isActive: props.isActive,
-        };
+    constructor({
+        name, description, effects,
+    }) {
+        this.name = name;
+        this.description = description;
+        this.effects = new Map(effects.map(effect => [effect.event, { ...effect }]));
     }
 };
 
@@ -13,6 +14,26 @@ exports.Abilities = [
     {
         name: 'AIDA Berserk',
         description: 'At the beginning of your turn, your General gains 2 AP and takes 2 damage.',
+        effects: [
+            {
+                event: EVENTS.onSelfTurnStart,
+                duration: -1,
+                effect: ({ game, unit }) => {
+                    game.log(`${unit.name} activates.`, `${game.players[unit.player].commander.name} gains 2 AP`);
+                    game.adjustCommanderStats({
+                        target: unit.player,
+                        ap: game.players[unit.player].commander.ap,
+                    });
+
+                    game.log(`${game.players[unit.player].commander.name} takes 2 damage`);
+                    game.damageCommander({
+                        target: unit.player,
+                        source: unit.player,
+                        damage: 2,
+                    });
+                },
+            },
+        ],
     },
     {
         name: 'AIDA Corrosion',
@@ -41,14 +62,63 @@ exports.Abilities = [
     {
         name: 'Blades Crossing',
         description: 'Whenever your General deals damage, deal an additional 1 damage.',
+        effects: [{
+            event: EVENTS.beforeDealDamage,
+            duration: -1,
+            effect: ({ event }) => ({ ...event, damage: event.damage + 1 }),
+        }],
     },
     {
         name: 'Bone Crunching',
         description: 'Your General gains 4 AP and takes 4 damage.',
+        effects: [{
+            event: EVENTS.onSelfTurnStart,
+            duration: 1,
+            effect: ({ event, game, unit }) => {
+                const target = game.players[event.target];
+
+                game.log(
+                    `${unit.name} activates.`,
+                    `${target.commander.name} gains 4 AP.`,
+                );
+                game.adjustCommanderStats({
+                    target: event.target,
+                    ap: target.commander.ap + 4,
+                });
+
+                game.log(
+                    `${target.commander.name} takes 4 damage.`,
+                );
+                game.evaluateDamage({
+                    target: event.target,
+                    damage: 4,
+                });
+            },
+        }],
     },
     {
         name: 'Border of Zero',
         description: "Set both Generals' HP to 1.",
+        effects: [
+            {
+                event: EVENTS.onSelfTurnStart,
+                duration: 1,
+                effect: ({ event, game, unit }) => {
+                    game.log(`${unit.name} activates. Both Generals HP set to 1.`);
+
+                    game.adjustCommanderStats({
+                        target: 0,
+                        hp: 1,
+                    });
+                    game.adjustCommanderStats({
+                        target: 1,
+                        hp: 1,
+                    });
+
+                    return event;
+                },
+            },
+        ],
     },
     {
         name: 'Change Ring',
@@ -57,6 +127,24 @@ exports.Abilities = [
     {
         name: 'Charge Ahead',
         description: 'Force your General to go first.',
+        effects: [
+            {
+                event: EVENTS.onTurnOrderDetermination,
+                duration: 1,
+                effect: ({ event, game, unit }) => {
+                    if (event.forceFirst && event.forceFirst !== unit.player) {
+                        return {
+                            ...event,
+                            forceFirst: false,
+                        };
+                    }
+                    return {
+                        ...event,
+                        forceFirst: unit.player,
+                    };
+                },
+            },
+        ],
     },
     {
         name: 'Clenching Teeth',
