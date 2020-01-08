@@ -4,25 +4,23 @@ exports.TYPES = {
     shield: 3,
 };
 
-exports.EFFECTS = {
-    onTurnOrderDetermination: 0,
-    onGameStart: 1,
-    onSelfTurnStart: 2,
-    onEnemyTurnStart: 3,
-    onAnyTurnStart: 4,
-    onSelfTurnEnd: 15,
-    onEnemyTurnEnd: 16,
-    onAnyTurnEnd: 17,
-    beforeDealDamage: 5,
-    afterDealDamage: 6,
-    beforeSelfDamage: 7,
-    afterSelfDamage: 8,
-    beforeEnemyDamage: 9,
-    afterEnemyDamage: 10,
-    beforeSelfAttack: 11,
-    afterSelfAttack: 12,
-    beforeEnemyAttack: 13,
-    afterEnemyAttack: 14,
+exports.EVENTS = {
+    onTurnOrderDetermination: 1,
+    onGameStart: 2,
+    onSelfTurnStart: 3,
+    onEnemyTurnStart: 4,
+    onAnyTurnStart: 5,
+    onSelfTurnEnd: 6,
+    onEnemyTurnEnd: 7,
+    onAnyTurnEnd: 8,
+    beforeSelfDamage: 9,
+    afterSelfDamage: 10,
+    beforeEnemyDamage: 11,
+    afterEnemyDamage: 12,
+    beforeSelfAttack: 13,
+    afterSelfAttack: 14,
+    beforeEnemyAttack: 15,
+    afterEnemyAttack: 16,
 };
 
 exports.RARITIES = {
